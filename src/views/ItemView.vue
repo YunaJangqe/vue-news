@@ -1,0 +1,56 @@
+<template>
+  <div>    
+    <section>
+      <!-- 질문 상세 정보 -->
+      <div>
+        <div class="user-container">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="user-description">
+          <router-link :to="`/user/${feetchedItem.user}`">
+          {{ feetchedItem.user }}
+          </router-link>
+          <div class="time">
+            {{ feetchedItem.time_ago }}
+          </div>
+        </div>
+        <h2>{{ feetchedItem.title }}</h2>
+      </div>
+    </section>
+    <section>
+      <!-- 질문 댓글 -->
+      <div v-html="feetchedItem.content"> </div>
+    </section>
+  </div>
+</template>
+
+<script>
+import { mapGetters} from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters(['feetchedItem']),
+  },
+  created() {
+    const itemId = this.$route.params.id;
+    this.$store.dispatch('FETCH_ITEM', itemId);
+  }
+}
+</script>
+
+<style scoped>
+  .user-container {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem;
+  }
+  .fa-user {
+    font-size: 2.5rem;
+  }
+  .user-description {
+    padding-left: 8px;
+  }
+  .time {
+    font-size: 0.7rem;
+  }
+</style>
