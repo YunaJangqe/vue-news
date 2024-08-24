@@ -2,34 +2,33 @@
   <div>    
     <section>
       <!-- 질문 상세 정보 -->
-      <div>
-        <div class="user-container">
-          <i class="fas fa-user"></i>
-        </div>
-        <div class="user-description">
-          <router-link :to="`/user/${feetchedItem.user}`">
-          {{ feetchedItem.user }}
-          </router-link>
-          <div class="time">
-            {{ feetchedItem.time_ago }}
-          </div>
-        </div>
-        <h2>{{ feetchedItem.title }}</h2>
-      </div>
+      <user-profile :info="fetchedItem">
+        <router-link slot="username" :to="`/user/${fetchedItem.user}`">
+          {{ fetchedItem.user }}
+        </router-link>
+        <template slot="time">{{ 'Posted ' + fetchedItem.time_ago }}</template>
+      </user-profile>
+    </section>
+    <section>
+      <h2>{{ fetchedItem.title }}</h2>
     </section>
     <section>
       <!-- 질문 댓글 -->
-      <div v-html="feetchedItem.content"> </div>
+      <div v-html="fetchedItem.content"> </div>
     </section>
   </div>
 </template>
 
 <script>
-import { mapGetters} from 'vuex';
+import UserProfile from '../components/UserProfile.vue';
+import { mapGetters } from 'vuex';
 
 export default {
+  components: {
+    UserProfile
+  },
   computed: {
-    ...mapGetters(['feetchedItem']),
+    ...mapGetters(['fetchedItem']),
   },
   created() {
     const itemId = this.$route.params.id;
@@ -37,20 +36,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  .user-container {
-    display: flex;
-    align-items: center;
-    padding: 0.7rem;
-  }
-  .fa-user {
-    font-size: 2.5rem;
-  }
-  .user-description {
-    padding-left: 8px;
-  }
-  .time {
-    font-size: 0.7rem;
-  }
-</style>
